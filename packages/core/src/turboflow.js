@@ -17,10 +17,6 @@ class TurboFlow {
       return
     }
 
-    if (this.config.debug) {
-      console.log('TurboFlow initializing with config:', this.config)
-    }
-
     this.initialized = true
 
     return this
@@ -31,8 +27,7 @@ class TurboFlow {
     return this
   }
 
-  registerAnimation(name, animation) {
-    console.log(`Registering animation: ${name}`)
+  registerAnimation(_name, _animation) {
     return this
   }
 
