@@ -1,0 +1,19 @@
+{
+  "name": "turboflow-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/core",
+    "examples/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @turboflow/core",
+    "build": "npm run build -w @turboflow/core",
+    "test": "npm run test -w @turboflow/core",
+    "lint": "npm run lint -w @turboflow/core",
+    "format": "npm run format -w @turboflow/core",
+    "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}

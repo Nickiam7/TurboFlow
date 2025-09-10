@@ -1,0 +1,88 @@
+# Dependencies
+node_modules/
+vendor/bundle/
+.bundle/
+
+# Build outputs
+dist/
+build/
+*.gem
+pkg/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Package manager files
+package-lock.json
+yarn.lock
+Gemfile.lock
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+CLAUDE.md
+
+# Cache files
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.prettierignore
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Ruby specific
+*.rbc
+.rspec_status
+.ruby-version
+.ruby-gemset
+.rvmrc
+
+# Rails specific
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+.byebug_history
+
+# Documentation
+/doc/
+/rdoc/
+.yardoc/
+
+# Example apps (if they have their own dependencies)
+examples/*/node_modules/
+examples/*/dist/
+examples/*/tmp/
+examples/*/log/

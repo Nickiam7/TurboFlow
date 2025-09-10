@@ -1,0 +1,48 @@
+{
+  "name": "@turboflow/core",
+  "version": "0.0.1",
+  "description": "Dynamic page transitions for Turbo applications",
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/turboflow.umd.js",
+  "module": "./dist/turboflow.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/turboflow.es.js",
+      "require": "./dist/turboflow.umd.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "turbo",
+    "hotwire",
+    "transitions",
+    "animations",
+    "view-transitions",
+    "rails"
+  ],
+  "peerDependencies": {
+    "@hotwired/turbo": ">=7.0.0 || >=8.0.0"
+  },
+  "devDependencies": {
+    "@hotwired/turbo": "^8.0.0",
+    "eslint": "^8.57.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.5",
+    "vite": "^5.0.0",
+    "vitest": "^1.2.0"
+  }
+}
