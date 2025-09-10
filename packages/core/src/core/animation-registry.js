@@ -39,7 +39,8 @@ class AnimationRegistry {
     const easing = options.easing || animation.easing
     const keyframeName = `turbo-flow-${name}-${Date.now()}`
 
-    const keyframeCSS = this.generateKeyframes(keyframeName, animation.keyframes)
+    const keyframes = animation.viewTransitions?.new || { from: {}, to: {} }
+    const keyframeCSS = this.generateKeyframes(keyframeName, keyframes)
     const animationCSS = `${keyframeName} ${duration}ms ${easing}`
 
     return {
@@ -67,16 +68,19 @@ class AnimationRegistry {
     if (!animation) return ''
 
     let transitions = animation.viewTransitions
-    
+
     if (animation.directions && animation.directions[direction]) {
       transitions = animation.directions[direction]
     }
-    
+
     const { old, new: newTransition } = transitions || {}
     if (!old || !newTransition) return ''
 
     const oldKeyframes = this.generateKeyframes(`turbo-flow-${name}-old-${direction}`, old)
-    const newKeyframes = this.generateKeyframes(`turbo-flow-${name}-new-${direction}`, newTransition)
+    const newKeyframes = this.generateKeyframes(
+      `turbo-flow-${name}-new-${direction}`,
+      newTransition
+    )
 
     return `
       ${oldKeyframes}

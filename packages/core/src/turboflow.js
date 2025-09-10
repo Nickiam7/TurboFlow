@@ -5,9 +5,9 @@ class TurboFlow {
       duration: 300,
       easing: 'ease-out',
       debug: false,
-      ...config
+      ...config,
     }
-    
+
     this.initialized = false
   }
 
@@ -22,7 +22,7 @@ class TurboFlow {
     }
 
     this.initialized = true
-    
+
     return this
   }
 
