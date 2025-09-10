@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { defineConfig } from 'vite'
+import { resolve } from 'path'
 
 export default defineConfig({
   build: {
@@ -15,12 +15,11 @@ export default defineConfig({
         globals: {
           '@hotwired/turbo': 'Turbo'
         },
-        // Ensure CSS is extracted
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') {
-            return 'turboflow.css';
+            return 'turboflow.css'
           }
-          return assetInfo.name;
+          return assetInfo.name
         }
       }
     },
@@ -38,4 +37,4 @@ export default defineConfig({
     globals: true,
     setupFiles: './tests/setup.js'
   }
-});
+})

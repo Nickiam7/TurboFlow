@@ -1,0 +1,5 @@
+export { default as fade } from './fade.js'
+export { default as slide } from './slide.js'
+export { default as zoom } from './zoom.js'
+export { default as flip } from './flip.js'
+export { default as morph } from './morph.js'
