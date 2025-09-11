@@ -5,34 +5,34 @@ export default {
 
   viewTransitions: {
     old: {
-      from: { transform: 'translateX(0)' },
-      to: { transform: 'translateX(-100%)' },
+      from: { transform: 'translateX(0)', opacity: 1 },
+      to: { transform: 'translateX(-100%)', opacity: 0 },
     },
     new: {
-      from: { transform: 'translateX(100%)' },
-      to: { transform: 'translateX(0)' },
+      from: { transform: 'translateX(100%)', opacity: 0 },
+      to: { transform: 'translateX(0)', opacity: 1 },
     },
   },
 
   directions: {
     forward: {
       old: {
-        from: { transform: 'translateX(0)' },
-        to: { transform: 'translateX(-100%)' },
+        from: { transform: 'translateX(0)', opacity: 1 },
+        to: { transform: 'translateX(-100%)', opacity: 0 },
       },
       new: {
-        from: { transform: 'translateX(100%)' },
-        to: { transform: 'translateX(0)' },
+        from: { transform: 'translateX(100%)', opacity: 0 },
+        to: { transform: 'translateX(0)', opacity: 1 },
       },
     },
     back: {
       old: {
-        from: { transform: 'translateX(0)' },
-        to: { transform: 'translateX(100%)' },
+        from: { transform: 'translateX(0)', opacity: 1 },
+        to: { transform: 'translateX(100%)', opacity: 0 },
       },
       new: {
-        from: { transform: 'translateX(-100%)' },
-        to: { transform: 'translateX(0)' },
+        from: { transform: 'translateX(-100%)', opacity: 0 },
+        to: { transform: 'translateX(0)', opacity: 1 },
       },
     },
     none: {

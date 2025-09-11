@@ -149,6 +149,10 @@ class Scanner {
     this.defaultTransition = transition
   }
 
+  clearCache() {
+    this.cache.clear()
+  }
+
   clear() {
     this.cache.clear()
     this.listeners.clear()

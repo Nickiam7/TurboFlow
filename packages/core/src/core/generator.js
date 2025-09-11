@@ -47,20 +47,10 @@ class Generator {
 
     processedAnimations.add(animationName)
 
-    const viewTransitionName = scopeId ? `turbo-flow-${scopeId}` : 'turbo-flow-root'
-
-    if (!this.viewTransitionNames.has(viewTransitionName)) {
-      this.viewTransitionNames.add(viewTransitionName)
-      css.push(`
-        :root {
-          view-transition-name: ${viewTransitionName};
-        }
-      `)
-    }
-
     const directions = animation.directions || {}
-    const hasDirections = directions.forward || directions.back
-
+    const hasDirections = directions.forward || directions.back || directions.none
+    
+    // Generate CSS for each direction with html class selector
     if (directions.forward) {
       css.push(this.generateDirectionalCSS(animationName, 'forward', directions.forward, animation))
     }
@@ -68,10 +58,15 @@ class Generator {
     if (directions.back) {
       css.push(this.generateDirectionalCSS(animationName, 'back', directions.back, animation))
     }
+    
+    if (directions.none) {
+      css.push(this.generateDirectionalCSS(animationName, 'none', directions.none, animation))
+    }
 
+    // Only generate default (non-directional) CSS if NO directions are defined
     if (animation.viewTransitions && !hasDirections) {
       css.push(
-        this.generateDirectionalCSS(animationName, 'default', animation.viewTransitions, animation)
+        this.generateDirectionalCSS(animationName, 'none', animation.viewTransitions, animation)
       )
     }
   }
@@ -89,15 +84,24 @@ class Generator {
     const duration = animation.duration || 300
     const easing = animation.easing || 'ease-out'
 
-    const selector = direction === 'default' ? '' : `[data-turbo-visit-direction="${direction}"]`
+    // Use combination of class and direction selectors
+    let selector = ''
+    if (direction === 'forward') {
+      selector = `html.turboflow-${animationName}[data-turbo-visit-direction="forward"]`
+    } else if (direction === 'back') {
+      selector = `html.turboflow-${animationName}[data-turbo-visit-direction="back"]`
+    } else {
+      // For 'none' direction - use :not selector to avoid overriding directional CSS
+      selector = `html.turboflow-${animationName}:not([data-turbo-visit-direction])`
+    }
 
     return `
       ${oldKeyframes}
       ${newKeyframes}
-      ${selector} ::view-transition-old(turbo-flow-root) {
+      ${selector}::view-transition-old(root) {
         animation: ${oldKeyframeName} ${duration}ms ${easing};
       }
-      ${selector} ::view-transition-new(turbo-flow-root) {
+      ${selector}::view-transition-new(root) {
         animation: ${newKeyframeName} ${duration}ms ${easing};
       }
     `
@@ -133,10 +137,10 @@ class Generator {
       css.push(`
         ${oldKeyframes}
         ${newKeyframes}
-        ::view-transition-old(${viewTransitionName}) {
+        #${target.id}::view-transition-old(${viewTransitionName}) {
           animation: ${oldKeyframeName} ${duration}ms ${easing};
         }
-        ::view-transition-new(${viewTransitionName}) {
+        #${target.id}::view-transition-new(${viewTransitionName}) {
           animation: ${newKeyframeName} ${duration}ms ${easing};
         }
       `)

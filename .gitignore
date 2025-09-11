@@ -86,3 +86,5 @@ examples/*/node_modules/
 examples/*/dist/
 examples/*/tmp/
 examples/*/log/
+
+examples

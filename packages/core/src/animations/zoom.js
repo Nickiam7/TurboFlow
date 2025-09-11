@@ -35,6 +35,15 @@ export default {
         to: { transform: 'scale(1)', opacity: 1 },
       },
     },
-    none: null,
+    none: {
+      old: {
+        from: { transform: 'scale(1)', opacity: 1 },
+        to: { transform: 'scale(0.95)', opacity: 0 },
+      },
+      new: {
+        from: { transform: 'scale(1.05)', opacity: 0 },
+        to: { transform: 'scale(1)', opacity: 1 },
+      },
+    },
   },
 }

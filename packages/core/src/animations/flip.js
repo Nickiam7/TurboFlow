@@ -27,7 +27,28 @@ export default {
   },
 
   directions: {
-    forward: null,
+    forward: {
+      old: {
+        from: {
+          transform: 'perspective(600px) rotateY(0deg)',
+          opacity: 1,
+        },
+        to: {
+          transform: 'perspective(600px) rotateY(-90deg)',
+          opacity: 0,
+        },
+      },
+      new: {
+        from: {
+          transform: 'perspective(600px) rotateY(90deg)',
+          opacity: 0,
+        },
+        to: {
+          transform: 'perspective(600px) rotateY(0deg)',
+          opacity: 1,
+        },
+      },
+    },
     back: {
       old: {
         from: {
@@ -50,6 +71,27 @@ export default {
         },
       },
     },
-    none: null,
+    none: {
+      old: {
+        from: {
+          transform: 'perspective(600px) rotateY(0deg)',
+          opacity: 1,
+        },
+        to: {
+          transform: 'perspective(600px) rotateY(-45deg)',
+          opacity: 0,
+        },
+      },
+      new: {
+        from: {
+          transform: 'perspective(600px) rotateY(45deg)',
+          opacity: 0,
+        },
+        to: {
+          transform: 'perspective(600px) rotateY(0deg)',
+          opacity: 1,
+        },
+      },
+    },
   },
 }
