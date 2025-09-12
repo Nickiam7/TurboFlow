@@ -14,6 +14,7 @@ class TurboFlow {
     this.injector = new Injector()
     this.initialized = false
     this.currentTransition = null
+    this.navigationHistory = new Map()
 
     this.registerDefaultAnimations()
   }
@@ -58,6 +59,7 @@ class TurboFlow {
   setupEventListeners() {
     document.addEventListener('turbo:click', this.handleClick.bind(this))
     document.addEventListener('turbo:before-visit', this.handleBeforeVisit.bind(this))
+    document.addEventListener('turbo:visit', this.handleVisit.bind(this))
     document.addEventListener('turbo:before-render', this.handleBeforeRender.bind(this))
     document.addEventListener('turbo:render', this.handleRender.bind(this))
     document.addEventListener('turbo:load', this.handleLoad.bind(this))
@@ -101,18 +103,82 @@ class TurboFlow {
       }
     }
     
-    // Store the transition for use in before-render
+    // Store the transition and URLs for use in before-render
     this.pendingTransition = transition
+    this.pendingUrl = event.detail.url
+    this.currentUrl = window.location.href  // Store current URL before navigation
     
     if (this.config.get('debug')) {
       console.log('TurboFlow: Before visit, storing transition:', transition || this.config.get('defaultTransition'))
     }
   }
 
+  handleVisit(event) {
+    // This fires for all navigations including back/forward
+    if (!this.config.shouldAnimate()) return
+    
+    // For back/forward navigation, before-visit doesn't fire
+    // So we need to set up the pending transition here
+    if (!this.pendingTransition) {
+      const direction = event.detail.action
+      
+      if (direction === 'restore') {
+        // This is a back/forward navigation
+        // Try to get the transition used to reach the current page
+        const currentUrl = window.location.href
+        const storedTransition = this.navigationHistory.get(currentUrl)
+        
+        if (storedTransition) {
+          this.pendingTransition = storedTransition
+          this.pendingUrl = event.detail.url
+          
+          if (this.config.get('debug')) {
+            console.log('TurboFlow: Restore navigation detected, using stored transition:', storedTransition)
+          }
+        } else {
+          this.pendingTransition = this.config.get('defaultTransition')
+          this.pendingUrl = event.detail.url
+          
+          if (this.config.get('debug')) {
+            console.log('TurboFlow: Restore navigation, no stored transition, using default')
+          }
+        }
+      }
+    }
+  }
+
   handleBeforeRender(event) {
     // Apply the transition right before render when Turbo has set the direction
     if (this.pendingTransition) {
-      const transition = this.pendingTransition
+      const direction = document.documentElement.getAttribute('data-turbo-visit-direction')
+      let transition = this.pendingTransition
+      
+      // On back navigation, use the transition that was used to leave the destination page
+      if (direction === 'back') {
+        // We're going back TO pendingUrl, so look up what transition was used to LEAVE it
+        const destinationUrl = this.pendingUrl
+        const storedTransition = this.navigationHistory.get(destinationUrl)
+        if (storedTransition) {
+          transition = storedTransition
+          if (this.config.get('debug')) {
+            console.log('TurboFlow: Back navigation, using stored transition:', storedTransition)
+          }
+        }
+      } else if (this.currentUrl) {
+        // Store the transition used to LEAVE the current page (for future back navigation)
+        // Use the URL we stored in handleBeforeVisit, not window.location.href
+        this.navigationHistory.set(this.currentUrl, transition)
+        
+        // Limit history size to prevent memory issues
+        if (this.navigationHistory.size > 50) {
+          const firstKey = this.navigationHistory.keys().next().value
+          this.navigationHistory.delete(firstKey)
+        }
+        
+        if (this.config.get('debug')) {
+          console.log('TurboFlow: Stored transition for leaving URL:', this.currentUrl, '→', transition)
+        }
+      }
       
       // Generate and inject CSS
       const css = this.generator.generate({ links: [{ transition }] })
@@ -132,10 +198,13 @@ class TurboFlow {
       
       if (this.config.get('debug')) {
         console.log('TurboFlow: Before render - Added class:', `turboflow-${transition}`)
-        console.log('TurboFlow: data-turbo-visit-direction:', document.documentElement.getAttribute('data-turbo-visit-direction'))
+        console.log('TurboFlow: data-turbo-visit-direction:', direction)
+        console.log('TurboFlow: Navigation history size:', this.navigationHistory.size)
       }
       
       this.pendingTransition = null
+      this.pendingUrl = null
+      this.currentUrl = null
     }
     
     // Clean up after render
@@ -194,6 +263,7 @@ class TurboFlow {
   destroy() {
     document.removeEventListener('turbo:click', this.handleClick)
     document.removeEventListener('turbo:before-visit', this.handleBeforeVisit)
+    document.removeEventListener('turbo:visit', this.handleVisit)
     document.removeEventListener('turbo:before-render', this.handleBeforeRender)
     document.removeEventListener('turbo:load', this.handleLoad)
     document.removeEventListener('turbo:before-frame-render', this.handleBeforeFrameRender)
@@ -202,6 +272,7 @@ class TurboFlow {
     this.injector.clear()
     this.scanner.clearCache()
     this.generator.clear()
+    this.navigationHistory.clear()
     this.initialized = false
 
     return this
