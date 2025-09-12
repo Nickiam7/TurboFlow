@@ -221,6 +221,25 @@ class TurboFlow {
     this.scanner.clearCache()
     
     const scanResults = this.scanner.scan(document.body)
+    
+    // Process morph targets and generate CSS for element transitions
+    if (scanResults.targets && scanResults.targets.length > 0) {
+      const morphTargets = scanResults.targets.filter(target => {
+        // Only process elements with IDs and morph transition
+        return target.id && (target.transition === 'morph' || this.registry.get(target.transition)?.usesViewTransitionName)
+      })
+      
+      if (morphTargets.length > 0) {
+        const css = this.generator.generate({ targets: morphTargets })
+        if (css) {
+          this.injector.inject(css, 'morph-elements')
+          if (this.config.get('debug')) {
+            console.log('TurboFlow: Generated CSS for morph elements:', morphTargets.map(t => t.id))
+          }
+        }
+      }
+    }
+    
     if (this.config.get('debug')) {
       console.log('TurboFlow: Page loaded, found elements:', scanResults)
     }

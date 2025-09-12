@@ -110,6 +110,19 @@ class Generator {
   generateElementTransitionCSS(target, css) {
     if (!target.id || !target.transition) return
 
+    // For 'morph' transition, just set view-transition-name and let browser handle it
+    if (target.transition === 'morph') {
+      const viewTransitionName = `turbo-flow-morph-${target.id}`
+      this.viewTransitionNames.add(viewTransitionName)
+
+      css.push(`
+        #${target.id} {
+          view-transition-name: ${viewTransitionName};
+        }
+      `)
+      return
+    }
+
     const animation = this.registry.get(target.transition)
     if (!animation) return
 
