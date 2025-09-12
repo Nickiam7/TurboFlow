@@ -114,6 +114,7 @@ class Generator {
     if (!animation) return
 
     const viewTransitionName = `turbo-flow-element-${target.id}`
+    this.viewTransitionNames.add(viewTransitionName)
 
     css.push(`
       #${target.id} {

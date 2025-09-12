@@ -26,9 +26,10 @@ describe('Generator', () => {
     const css = generator.generate(transitions)
     
     expect(css).toContain('@keyframes')
-    expect(css).toContain('::view-transition-old')
-    expect(css).toContain('::view-transition-new')
-    expect(css).toContain('turbo-flow-root')
+    expect(css).toContain('::view-transition-old(root)')
+    expect(css).toContain('::view-transition-new(root)')
+    expect(css).toContain('html.turboflow-fade')
+    expect(css).toContain('html.turboflow-slide')
   })
 
   it('should generate CSS for form transitions', () => {
@@ -87,7 +88,7 @@ describe('Generator', () => {
 
     const css = generator.generate(transitions)
     
-    expect(css).toContain('turbo-flow-modal')
+    expect(css).toContain('html.turboflow-zoom')
     expect(css).toContain('scale')
   })
 
@@ -101,7 +102,7 @@ describe('Generator', () => {
     }
 
     const css = generator.generate(transitions)
-    const fadeCount = (css.match(/@keyframes turbo-flow-fade-old-default/g) || []).length
+    const fadeCount = (css.match(/@keyframes turbo-flow-fade-old-none/g) || []).length
     
     expect(fadeCount).toBe(1)
   })
@@ -126,7 +127,7 @@ describe('Generator', () => {
 
   it('should clear generated CSS and names', () => {
     const transitions = {
-      links: [{ href: '/page', transition: 'fade' }]
+      targets: [{ id: 'hero', transition: 'fade' }]
     }
 
     generator.generate(transitions)
