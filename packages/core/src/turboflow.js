@@ -207,16 +207,16 @@ class TurboFlow {
     const scanResults = this.scanner.scan(document.body)
 
     if (scanResults.targets && scanResults.targets.length > 0) {
-      const morphTargets = scanResults.targets.filter(target => {
-        return target.id && (target.transition === 'morph' || this.registry.get(target.transition)?.usesViewTransitionName)
+      const validTargets = scanResults.targets.filter(target => {
+        return target.id && target.transition && (target.transition === 'morph' || this.registry.get(target.transition))
       })
 
-      if (morphTargets.length > 0) {
-        const css = this.generator.generate({ targets: morphTargets })
+      if (validTargets.length > 0) {
+        const css = this.generator.generate({ targets: validTargets })
         if (css) {
-          this.injector.inject(css, 'morph-elements')
+          this.injector.inject(css, 'element-transitions')
           if (this.config.get('debug')) {
-            console.log('TurboFlow: Generated CSS for morph elements:', morphTargets.map(t => t.id))
+            console.log('TurboFlow: Generated CSS for element transitions:', validTargets.map(t => `${t.id}:${t.transition}`))
           }
         }
       }

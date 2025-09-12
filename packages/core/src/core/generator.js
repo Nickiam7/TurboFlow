@@ -151,10 +151,10 @@ class Generator {
       css.push(`
         ${oldKeyframes}
         ${newKeyframes}
-        #${target.id}::view-transition-old(${viewTransitionName}) {
+        ::view-transition-old(${viewTransitionName}) {
           animation: ${oldKeyframeName} ${duration}ms ${easing};
         }
-        #${target.id}::view-transition-new(${viewTransitionName}) {
+        ::view-transition-new(${viewTransitionName}) {
           animation: ${newKeyframeName} ${duration}ms ${easing};
         }
       `)
