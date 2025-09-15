@@ -58,6 +58,7 @@ class TurboFlow {
 
   setupEventListeners() {
     document.addEventListener('turbo:click', this.handleClick.bind(this))
+    document.addEventListener('turbo:submit-start', this.handleSubmitStart.bind(this))
     document.addEventListener('turbo:before-visit', this.handleBeforeVisit.bind(this))
     document.addEventListener('turbo:visit', this.handleVisit.bind(this))
     document.addEventListener('turbo:before-render', this.handleBeforeRender.bind(this))
@@ -84,6 +85,16 @@ class TurboFlow {
       this.currentTransition = link.dataset.turboFlow
       if (this.config.get('debug')) {
         console.log('TurboFlow: Click detected, transition:', this.currentTransition)
+      }
+    }
+  }
+
+  handleSubmitStart(event) {
+    const form = event.target
+    if (form && form.dataset.turboFlow) {
+      this.currentTransition = form.dataset.turboFlow
+      if (this.config.get('debug')) {
+        console.log('TurboFlow: Form submit detected, transition:', this.currentTransition)
       }
     }
   }
@@ -263,6 +274,7 @@ class TurboFlow {
 
   destroy() {
     document.removeEventListener('turbo:click', this.handleClick)
+    document.removeEventListener('turbo:submit-start', this.handleSubmitStart)
     document.removeEventListener('turbo:before-visit', this.handleBeforeVisit)
     document.removeEventListener('turbo:visit', this.handleVisit)
     document.removeEventListener('turbo:before-render', this.handleBeforeRender)
