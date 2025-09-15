@@ -15,24 +15,34 @@ And then execute:
 bundle install
 ```
 
+Run the install generator:
+```bash
+bin/rails generate turbo_flow:install
+```
+
+This will:
+- Create a configuration file at `config/initializers/turboflow.rb`
+- Add `turboflow_meta_tags` to your application layout
+- Update your `<body>` tag to use the `turboflow_body_tag` helper
+
 ## Setup
 
-### With Importmap (Rails 7 default)
-
-In your application layout:
+The install generator automatically updates your application layout with:
 
 ```erb
+<!-- In <head> section -->
 <%= turboflow_meta_tags %>
-<%= turboflow_config %>
+
+<!-- Replace <body> with -->
+<%= turboflow_body_tag class: "your-classes" do %>
+  <!-- your content -->
+<% end %>
 ```
 
-### With esbuild/webpack
-
-Import TurboFlow in your JavaScript:
-
-```javascript
-import 'turboflow'
-```
+The `turboflow_meta_tags` helper includes:
+- View Transitions API meta tag
+- TurboFlow configuration script
+- TurboFlow JavaScript library
 
 ## Usage
 
