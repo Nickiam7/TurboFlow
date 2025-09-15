@@ -23,26 +23,22 @@ bin/rails generate turbo_flow:install
 This will:
 - Create a configuration file at `config/initializers/turboflow.rb`
 - Add `turboflow_meta_tags` to your application layout
-- Update your `<body>` tag to use the `turboflow_body_tag` helper
 
 ## Setup
 
-The install generator automatically updates your application layout with:
+The install generator automatically adds to your application layout:
 
 ```erb
 <!-- In <head> section -->
 <%= turboflow_meta_tags %>
-
-<!-- Replace <body> with -->
-<%= turboflow_body_tag class: "your-classes" do %>
-  <!-- your content -->
-<% end %>
 ```
 
-The `turboflow_meta_tags` helper includes:
+The `turboflow_meta_tags` helper includes everything needed:
 - View Transitions API meta tag
-- TurboFlow configuration script
+- TurboFlow configuration from your initializer
 - TurboFlow JavaScript library
+
+No changes to your `<body>` tag are required - TurboFlow works with standard HTML.
 
 ## Usage
 
