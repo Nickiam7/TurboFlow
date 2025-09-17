@@ -73,7 +73,7 @@ No changes to your `<body>` tag are required - TurboFlow works with standard HTM
   <h1>This will morph between pages</h1>
 <% end %>
 
-<%= turboflow_element :card, flow: :fade do %>
+<%= turboflow_target :card, flow: :fade do %>
   <p>Custom element transition</p>
 <% end %>
 ```

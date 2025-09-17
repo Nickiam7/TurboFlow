@@ -21,7 +21,7 @@ TurboFlow leverages the browser's native View Transitions API to deliver:
 
 ## Features
 
-### 🎬 Built-in Transitions
+### Built-in Transitions
 Choose from beautiful, pre-designed transitions:
 - **fade** - Smooth opacity cross-fade
 - **slide** - iOS-style sliding navigation
@@ -32,22 +32,22 @@ Choose from beautiful, pre-designed transitions:
 
 Default transition is **fade**
 
-### 🎯 Smart Defaults
+### Smart Defaults
 - Automatically detects navigation direction (forward/back)
 - Different transitions for different actions (links, forms, frames)
 - Respects user preferences (`prefers-reduced-motion`)
 - Falls back gracefully in older browsers
 
-### 🛠 Developer Friendly
+### Developer Friendly
 ```erb
-<!-- With Rails hlpers -->
+<!-- With Rails helpers -->
 <%= link_to "About", about_path, data: { "turbo-flow": "slide" } %>
 
 <!-- With Turboflow helpers -->
 <%= link_flow_to "About", about_path, flow: :slide %>
 ```
 
-### 📦 Seamless Integration
+### Seamless Integration
 - Works with Turbo Drive, Frames, and Streams
 - No changes to controllers or routes
 - Progressive enhancement - your app works without JavaScript
@@ -98,7 +98,7 @@ Start using transitions:
 <% end %>
 
 <!-- Elements that morph -->
-<div id="hero-banner" data-turbo-flow-element="morph">
+<div id="hero-banner" data-turbo-flow-target="morph">
   <!-- morphs between pages -->
 </div>
 ```
